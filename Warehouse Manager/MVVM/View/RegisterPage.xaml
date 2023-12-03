@@ -1,0 +1,147 @@
+﻿<Page x:Class="Warehouse_Manager.MVVM.View.RegisterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Warehouse_Manager.MVVM.View"
+      Background="#2C4247"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="RegisterPage">
+
+    <Grid>
+
+        <Border
+            Padding="20"
+         Grid.ColumnSpan="2"
+         Height="300"
+         Width="500"
+         Background="#D9D9D9"
+         CornerRadius="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0">
+               <TextBlock
+                    Width="170"
+                    Height="30"
+                    Margin="10,20,10,5"
+                    Padding="0"
+                    Text="Registration"
+                    FontFamily="Inter"
+                    Foreground="#141F21"
+                    Background="Transparent"
+                    FontWeight="SemiBold"
+                    FontSize="26"/>
+               <Border 
+                    Width="160"
+                    Height="30"
+                    CornerRadius="5"
+                    Margin="10"
+                    Background="#5D8E99">
+                        <TextBox TextDecorations="Underline"
+                          Width="160"
+                          Height="30"
+                          Padding="5"
+                          BorderThickness="0"
+                          Text="username"
+                          Foreground="#D9D9D9"
+                          Background="Transparent"/>
+                </Border>
+                <Border 
+                     Width="160"
+                     Height="30"
+                     CornerRadius="5"
+                     Margin="10"
+                     Background="#5D8E99">
+                    <TextBox
+                        TextDecorations="Underline"
+                        Width="160"
+                        Height="30"
+                        BorderThickness="0"
+                        Padding="5"
+                        Text="firstname"
+                        Foreground="#D9D9D9"
+                        Background="Transparent"/>
+                </Border>
+               <Border 
+                   Width="160"
+                   Height="30"
+                   CornerRadius="5"
+                   Margin="10"
+                   Background="#5D8E99">
+                   <TextBox
+                       TextDecorations="Underline"
+                       Width="160"
+                       Height="30"
+                       BorderThickness="0"
+                       Padding="5"
+                       Text="lastname"
+                       Foreground="#D9D9D9"
+                       Background="Transparent"/>
+               </Border>
+                </StackPanel>
+            <StackPanel Grid.Column="1">
+                <Border 
+
+                    Width="160"
+                    Height="30"
+                    CornerRadius="5"
+                    Margin="10, 65, 10, 10"
+                    Background="#5D8E99">
+                    <TextBox TextDecorations="Underline"
+                             Width="160"
+                             Height="30"
+                             Padding="5"
+                             BorderThickness="0"
+                             Text="email"
+                             Foreground="#D9D9D9"
+                             Background="Transparent"/>
+                </Border>
+                <Border 
+                    Width="160"
+                    Height="30"
+                    CornerRadius="5"
+                    Margin="10"
+                    Background="#5D8E99">
+                    <TextBox
+                        TextDecorations="Underline"
+                        Width="160"
+                        Height="30"
+                        BorderThickness="0"
+                        Padding="5"
+                        Text="password"
+                        Foreground="#D9D9D9"
+                        Background="Transparent"/>
+                </Border>
+                    <Border 
+                    Width="160"
+                    Height="30"
+                    CornerRadius="5"
+                    Margin="10"
+                    Background="#5D8E99">
+                    <TextBox
+                        TextDecorations="Underline"
+                        Width="160"
+                        Height="30"
+                        BorderThickness="0"
+                        Padding="5"
+                        Text="password confirmation"
+                        Foreground="#D9D9D9"
+                        Background="Transparent"/>
+                </Border>
+                <Button
+                    Width="120"
+                    Height="30"
+                    Background="#2C4247"
+                    BorderBrush="Transparent"
+                    Margin="60, 10, 20, 30"
+                    Content="Register" />
+            </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Page>
