@@ -20,7 +20,8 @@
                 Height="230"
                 Width="220"
                 Background="#D9D9D9"
-                CornerRadius="10">
+                CornerRadius="10"
+                Margin="0, 50, 0, 0">
             <StackPanel>
                 <TextBlock
                     Width="170"
@@ -39,32 +40,48 @@
                     CornerRadius="5"
                     Margin="12"
                     Background="#5D8E99">
-                    <TextBox TextDecorations="Underline"
-                             Width="160"
-                             Height="30"
-                             Padding="5"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             Text="username"
-                             Foreground="#D9D9D9"/>
-                </Border>
-                <Border 
-                    Width="160"
-                    Height="30"
-                    CornerRadius="5"
-                    Margin="12"
-                    Background="#5D8E99">
-                    <TextBox
-                        TextDecorations="Underline"
+                        <Grid>
+                            <!-- Background TextBlock for watermark/hint -->
+                           
+
+                            <!-- Actual TextBox for user input -->
+                            <TextBox
+                                Width="160"
+                                Height="30"
+                                BorderThickness="0"
+                                Padding="5"
+                                Background="Transparent"
+                                Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Foreground="#D9D9D9">
+                                
+                            </TextBox>
+                        </Grid>
+                    </Border>
+                    <Border 
                         Width="160"
                         Height="30"
-                        BorderThickness="0"
-                        Padding="5"
-                        Background="Transparent"
-                        Text="password"
-                        Foreground="#D9D9D9"/>
-                </Border>
-                <Button
+                        CornerRadius="5"
+                        Margin="12"
+                        Background="#5D8E99">
+                        <Grid>
+                            <!-- Background TextBlock for watermark/hint -->
+                          
+
+                            <!-- Actual TextBox for user input -->
+                            <TextBox
+                                Width="160"
+                                Height="30"
+                                BorderThickness="0"
+                                Padding="5"
+                                Background="Transparent"
+                                Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Foreground="#D9D9D9">
+                            </TextBox>
+                        </Grid>
+                    </Border>
+                    <Button
+                    x:Name="LoginButton"
+                    Command="{Binding LoginButtonCommand}"
                     Width="120"
                     Height="30"
                     Background="#2C4247"
@@ -74,6 +91,8 @@
                 </StackPanel>
         </Border>
             <Button
+                x:Name="SignupButton"
+                Command="{Binding SignupButtonCommand}"
                 Width="120"
                 Height="25"
                 Background="Transparent"
@@ -83,6 +102,30 @@
                 Content="SignUp"
                 FontFamily="Inter"
                 FontWeight="Light"/>
+            <TextBlock
+                Width="15"
+                Height="15"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                Foreground="#D9D9D9"
+                FontSize="12"
+                Text="or"
+                FontFamily="Inter"
+                FontWeight="Light"/>
+            <Button
+                x:Name="ContinueButton"
+                Command="{Binding ContinueButtonCommand}"
+                Width="160"
+                Height="25"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Foreground="#D9D9D9"
+                FontSize="12"
+                Content="Continue without login"
+                FontFamily="Inter"
+                FontWeight="Light"/>
         </StackPanel>
+        
     </Grid>
 </Page>

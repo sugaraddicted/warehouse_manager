@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Warehouse_Manager.MVVM.Model;
+
 
 namespace Warehouse_Manager.Data
 {
@@ -15,18 +13,19 @@ namespace Warehouse_Manager.Data
         {
 
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            optionsBuilder.UseOracle(@"");
-            base.OnConfiguring(optionsBuilder);
+            modelBuilder.Entity<ShoppingCartItem>()
+                .HasOne(sc => sc.Product)
+                .WithMany()
+                .HasForeignKey(sc => sc.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
-        public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<ShippingAddress> ShippingAddresses { get; set; }
     }

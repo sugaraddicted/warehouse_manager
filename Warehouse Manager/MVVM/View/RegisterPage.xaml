@@ -10,22 +10,38 @@
       Title="RegisterPage">
 
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Button
+            x:Name="BackButton"
+            Command="{Binding BackButtonCommand}"
+            Grid.Row="0"
+            Height="30"
+            Width="80" 
+            Margin="26,10,674,10"
+            Background="#141F21"
+            BorderBrush="Transparent"
+            Content="Back"
+            HorizontalContentAlignment="Center"/>
         <Border
+            Grid.Row="1"
             Padding="20"
-         Grid.ColumnSpan="2"
-         Height="300"
-         Width="500"
-         Background="#D9D9D9"
-         CornerRadius="10">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
+            Height="300"
+            Width="500"
+            Background="#D9D9D9"
+            CornerRadius="10" 
+            Margin="140,20,140,20">
+            <Grid>
 
-            <StackPanel Grid.Column="0">
-               <TextBlock
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock
                     Width="170"
                     Height="30"
                     Margin="10,20,10,5"
@@ -36,7 +52,7 @@
                     Background="Transparent"
                     FontWeight="SemiBold"
                     FontSize="26"/>
-               <Border 
+                    <Border 
                     Width="160"
                     Height="30"
                     CornerRadius="5"
@@ -47,100 +63,101 @@
                           Height="30"
                           Padding="5"
                           BorderThickness="0"
-                          Text="username"
+                          Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                           Foreground="#D9D9D9"
                           Background="Transparent"/>
-                </Border>
-                <Border 
+                    </Border>
+                    <Border 
                      Width="160"
                      Height="30"
                      CornerRadius="5"
                      Margin="10"
                      Background="#5D8E99">
-                    <TextBox
+                        <TextBox
                         TextDecorations="Underline"
                         Width="160"
                         Height="30"
                         BorderThickness="0"
                         Padding="5"
-                        Text="firstname"
+                        Text="{Binding Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Foreground="#D9D9D9"
                         Background="Transparent"/>
-                </Border>
-               <Border 
+                    </Border>
+                    <Border 
                    Width="160"
                    Height="30"
                    CornerRadius="5"
                    Margin="10"
                    Background="#5D8E99">
-                   <TextBox
+                        <TextBox
                        TextDecorations="Underline"
                        Width="160"
                        Height="30"
                        BorderThickness="0"
                        Padding="5"
-                       Text="lastname"
+                       Text="{Binding Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        Foreground="#D9D9D9"
                        Background="Transparent"/>
-               </Border>
+                    </Border>
                 </StackPanel>
-            <StackPanel Grid.Column="1">
-                <Border 
+                <StackPanel Grid.Column="1">
+                    <Border 
 
                     Width="160"
                     Height="30"
                     CornerRadius="5"
                     Margin="10, 65, 10, 10"
                     Background="#5D8E99">
-                    <TextBox TextDecorations="Underline"
+                        <TextBox TextDecorations="Underline"
                              Width="160"
                              Height="30"
                              Padding="5"
                              BorderThickness="0"
-                             Text="email"
+                             Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Foreground="#D9D9D9"
                              Background="Transparent"/>
-                </Border>
-                <Border 
-                    Width="160"
-                    Height="30"
-                    CornerRadius="5"
-                    Margin="10"
-                    Background="#5D8E99">
-                    <TextBox
-                        TextDecorations="Underline"
-                        Width="160"
-                        Height="30"
-                        BorderThickness="0"
-                        Padding="5"
-                        Text="password"
-                        Foreground="#D9D9D9"
-                        Background="Transparent"/>
-                </Border>
+                    </Border>
                     <Border 
                     Width="160"
                     Height="30"
                     CornerRadius="5"
                     Margin="10"
                     Background="#5D8E99">
-                    <TextBox
+                        <TextBox
                         TextDecorations="Underline"
                         Width="160"
                         Height="30"
                         BorderThickness="0"
                         Padding="5"
-                        Text="password confirmation"
+                        Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Foreground="#D9D9D9"
                         Background="Transparent"/>
-                </Border>
-                <Button
+                    </Border>
+                    <Border 
+                    Width="160"
+                    Height="30"
+                    CornerRadius="5"
+                    Margin="10"
+                    Background="#5D8E99">
+                        <TextBox
+                        TextDecorations="Underline"
+                        Width="160"
+                        Height="30"
+                        BorderThickness="0"
+                        Padding="5"
+                        Text="{Binding PasswordConfirmation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Foreground="#D9D9D9"
+                        Background="Transparent"/>
+                    </Border>
+                    <Button
                     Width="120"
+                    Command="{Binding RegisterButtonCommand}"
                     Height="30"
                     Background="#2C4247"
                     BorderBrush="Transparent"
                     Margin="60, 10, 20, 30"
                     Content="Register" />
-            </StackPanel>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>

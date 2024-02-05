@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Warehouse_Manager.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for DeleteProductPage.xaml
+    /// Interaction logic for OrderPage.xaml
     /// </summary>
-    public partial class DeleteProductPage : Page
+    public partial class OrderPage : Page
     {
-        public DeleteProductPage()
+        public OrderPage()
         {
             InitializeComponent();
         }

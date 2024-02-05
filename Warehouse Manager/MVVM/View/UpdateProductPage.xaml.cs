@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Warehouse_Manager.Data.Services.Interfaces;
+using Warehouse_Manager.Dto;
+using Warehouse_Manager.MVVM.ViewModel;
+using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.View
 {
@@ -20,29 +24,15 @@ namespace Warehouse_Manager.MVVM.View
     /// </summary>
     public partial class UpdateProductPage : Page
     {
-        public UpdateProductPage()
+        private readonly IProductService _productService;
+        private readonly IAuthenticator _authenticator;
+        public UpdateProductPage(ProductDto productVM, IProductService productService)
         {
             InitializeComponent();
+            _productService = productService;
+            var viewModel = new UpdateProductViewModel(_productService, productVM);
+            DataContext = viewModel;
         }
 
-        private void UpdateProductButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void UploadImageButton_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
-        }
     }
 }

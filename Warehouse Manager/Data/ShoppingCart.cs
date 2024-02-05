@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Microsoft.EntityFrameworkCore;
 using Warehouse_Manager.Data;
 
@@ -12,9 +8,9 @@ namespace Warehouse_Manager.MVVM.Model
 {
     public class ShoppingCart
     {
-        public AppDbContext _context { get; set; }
+        private AppDbContext _context { get; set; }
 
-        public string Id { get; set; }
+        public string ShoppingCartId { get; set; }
         public List<ShoppingCartItem> ShoppingCartItems { get; set; }
 
         public ShoppingCart(AppDbContext context)
@@ -22,49 +18,36 @@ namespace Warehouse_Manager.MVVM.Model
             _context = context;
         }
 
-        public static ShoppingCart GetShoppingCart(IServiceProvider services)
+        public void AddItemToCart(Product product)
         {
-            var context = services.GetService<AppDbContext>();
-
-            string cartId = "";
-
-            return new ShoppingCart(context) { Id = cartId };
-
-        }
-
-        public void AddItemToCart(OrderItem item)
-        {
-            var shoppingCartItem =
-                _context.ShoppingCartItems.FirstOrDefault(n => n.OrderItem.Id == item.Id && n.Id == item.Id);
+            var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Product.Id == product.Id && n.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem == null)
             {
                 shoppingCartItem = new ShoppingCartItem()
                 {
-                    ShoppingCartId = Id,
-                    OrderItem = item
+                    ShoppingCartId = ShoppingCartId,
+                    Product = _context.Products.FirstOrDefault(n => n.Id == product.Id),
+                    Quantity = 1
                 };
                 _context.ShoppingCartItems.Add(shoppingCartItem);
             }
             else
             {
-                shoppingCartItem.OrderItem.Quantity++;
+                shoppingCartItem.Quantity++;
             }
-
             _context.SaveChanges();
         }
 
         public void RemoveItemFromCart(Product product)
         {
-            var shoppingCartItem =
-                _context.ShoppingCartItems.FirstOrDefault(n =>
-                    n.OrderItem.Product.Id == product.Id && n.ShoppingCartId == Id);
+            var shoppingCartItem = _context.ShoppingCartItems.FirstOrDefault(n => n.Product.Id == product.Id && n.ShoppingCartId == ShoppingCartId);
 
             if (shoppingCartItem != null)
             {
-                if (shoppingCartItem.OrderItem.Quantity > 1)
+                if (shoppingCartItem.Quantity > 1)
                 {
-                    shoppingCartItem.OrderItem.Quantity--;
+                    shoppingCartItem.Quantity--;
                 }
                 else
                 {
@@ -77,19 +60,23 @@ namespace Warehouse_Manager.MVVM.Model
 
         public List<ShoppingCartItem> GetShoppingCartItems()
         {
-            return ShoppingCartItems ?? (ShoppingCartItems = _context.ShoppingCartItems
-                .Where(n => n.ShoppingCartId == Id).Include(n => n.OrderItem.Product).ToList());
+            ShoppingCartItems = _context.ShoppingCartItems
+                .Where(n => n.ShoppingCartId == ShoppingCartId)
+                .ToList();
+
+            return ShoppingCartItems;
         }
 
         public async Task ClearShoppingCartAsync()
         {
-            var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == Id).ToListAsync();
+            var items = await _context.ShoppingCartItems.Where(n => n.ShoppingCartId == ShoppingCartId).ToListAsync();
 
             _context.ShoppingCartItems.RemoveRange(items);
             await _context.SaveChangesAsync();
         }
 
         public decimal GetShoppingCartTotal() => _context.ShoppingCartItems
-            .Where(n => n.ShoppingCartId == Id).Select(n => n.OrderItem.Product.Price * n.OrderItem.Quantity).Sum();
+            .Where(n => n.ShoppingCartId == ShoppingCartId).Select(n => n.Product.Price * n.Quantity).Sum();
     }
 }
+

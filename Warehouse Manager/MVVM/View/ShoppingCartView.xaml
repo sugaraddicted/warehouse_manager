@@ -1,0 +1,57 @@
+﻿<Page x:Class="Warehouse_Manager.MVVM.View.ShoppingCartView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Warehouse_Manager.MVVM.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Background="#2C4247"
+      Title="ShoppingCartView">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button
+            x:Name="BackButton"
+            Command="{Binding BackButtonCommand}"
+            Grid.Column="0"
+            Height="30"
+            Width="80" 
+            Background="#141F21"
+            BorderBrush="Transparent"
+            Margin="15"
+            Foreground="White"
+            Content="Back"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Left"
+            HorizontalContentAlignment="Center"/>
+        <ListView ItemsSource="{Binding CartItems, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Foreground="White" Width="650" HorizontalAlignment="Left">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding Product.Source}" Margin="5" Height="80" Width="80"/>
+                                    <Button Background="#141F21" Content="-" Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                CommandParameter="{Binding}" Margin="5"  Foreground="White" Height="30" Width="25" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0, 0, 0, 5" />
+                                    <TextBlock Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5" Foreground="White" VerticalAlignment="Center"/>
+                                    <Button Background="#141F21" Content="+" Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                CommandParameter="{Binding}"  Margin="5" Foreground="White" Height="30" Width="25" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0, 0, 0, 5"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Product Name" DisplayMemberBinding="{Binding Product.Name}" />
+                    <GridViewColumn Header="Product Price" DisplayMemberBinding="{Binding Product.Price}" />
+                    <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding TotalPrice}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <Button Grid.Column="1" Content="Place Order" BorderBrush="Transparent" Command="{Binding PlaceOrderCommand}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15" Background="#141F21"/>
+    </Grid>
+</Page>

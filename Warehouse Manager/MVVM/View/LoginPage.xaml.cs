@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Warehouse_Manager.Data.Services.Interfaces;
+using Warehouse_Manager.MVVM.ViewModel;
+using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.View
 {
@@ -20,9 +23,15 @@ namespace Warehouse_Manager.MVVM.View
     /// </summary>
     public partial class Login : Page
     {
-        public Login()
+        private readonly IAuthenticator _authenticator;
+        private readonly IProductService _productService;
+        public Login(IAuthenticator authenticator, IProductService productService)
         {
             InitializeComponent();
+            _productService = productService;
+            _authenticator = authenticator;
+            var viewModel = new LoginViewModel(_authenticator, _productService);
+            DataContext = viewModel;
         }
     }
 }
