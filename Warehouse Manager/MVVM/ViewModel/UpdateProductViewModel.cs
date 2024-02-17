@@ -1,16 +1,12 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using GalaSoft.MvvmLight;
 using Warehouse_Manager.Data;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.Dto;
@@ -19,10 +15,11 @@ using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class UpdateProductViewModel : INotifyPropertyChanged
+    public class UpdateProductViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private readonly IAuthenticator _authenticator;
         private readonly IProductService _productService;
+        private readonly IAuthenticator _authenticator;
+
         private string _name;
         public string Name
         {
@@ -113,7 +110,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         public ICommand UpdateButtonCommand { get; private set; }
         public RelayCommand UploadImageButtonCommand { get; private set; }
 
-        public UpdateProductViewModel(IProductService productService, ProductDto productVM)
+        public UpdateProductViewModel(IProductService productService, ProductDto productVM, IAuthenticator authenticator)
         {
             Name = productVM.Name;
             Description = productVM.Description;
@@ -121,6 +118,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
             Image = productVM.Image;
             StockQuantity = productVM.StockQuantity;
             Product = productVM;
+            _authenticator = authenticator;
             Image = Helper.ConvertByteArrayToImage(productVM.BinaryContent);
             BackButtonCommand = new RelayCommand<ProductDto>(NavigateToDetailsPage);
             UploadImageButtonCommand = new RelayCommand(UploadImage);
@@ -132,7 +130,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new ProductPage(_productService, productVM, _authenticator));
+                var viewModel = new ProductDetailsViewModel(_productService, productVM, _authenticator);
+                frame.Navigate(new ProductPage(viewModel));
             }
         }
 

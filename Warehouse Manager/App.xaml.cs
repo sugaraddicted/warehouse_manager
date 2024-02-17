@@ -11,6 +11,7 @@ using Warehouse_Manager.State.Authenticators;
 using Warehouse_Manager.MVVM.View;
 using Microsoft.EntityFrameworkCore;
 using Warehouse_Manager.Data.Services.Interfaces;
+using System.Windows.Controls;
 
 namespace Warehouse_Manager
 {
@@ -24,36 +25,47 @@ namespace Warehouse_Manager
             base.OnStartup(e);
 
             IServiceProvider serviceProvider = CreateServiceProvider();
+            ViewModelFactory.Initialize(serviceProvider);
             Window window = serviceProvider.GetRequiredService<MainWindow>();
             window.Show();
         }
         private IServiceProvider CreateServiceProvider()
         {
+
             IServiceCollection services = new ServiceCollection();
 
             services.AddSingleton(s => new MainWindow(
-                s.GetRequiredService<IAuthenticator>(),
-                s.GetRequiredService<IProductService>()
+                s.GetRequiredService<IAuthenticator>()
             ));
+            services.AddSingleton<Frame>();
 
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer("Data Source=DESKTOP-7RLU0G4;Initial Catalog=warehouse;Integrated Security=True"));
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddSingleton<IAuthenticator, Authenticator>();
+            services.AddSingleton<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
-            services.AddScoped<ShoppingCartViewModel>();
+            services.AddTransient<ShoppingCartViewModel>();
+            services.AddScoped<LoginViewModel>();
+            services.AddScoped<RegisterViewModel>();
+            services.AddTransient<AddProductViewModel>();
+            services.AddTransient<DeleteProductViewModel>();
+            services.AddTransient<UpdateProductViewModel>();
+            services.AddTransient<HomeViewModel>();
+            services.AddScoped<OrderViewModel>();
+            services.AddTransient<ProductDetailsViewModel>();
 
             services.AddScoped<RegisterPage>();
-            services.AddScoped<HomePage>();
-            services.AddScoped<ProductPage>();
-            services.AddScoped<AddProductPage>();
-            services.AddScoped<UpdateProductPage>();
-            services.AddScoped<Login>();
-            services.AddScoped<DeleteProductConfirmationPage>();
-            services.AddScoped<ShoppingCartView>();
+            services.AddTransient<HomePage>();
+            services.AddTransient<ProductPage>();
+            services.AddTransient<AddProductPage>();
+            services.AddTransient<UpdateProductPage>();
+            services.AddScoped<LoginPage>();
+            services.AddTransient<DeleteProductConfirmationPage>();
+            services.AddTransient<ShoppingCartPage>();
 
             return services.BuildServiceProvider();
         }

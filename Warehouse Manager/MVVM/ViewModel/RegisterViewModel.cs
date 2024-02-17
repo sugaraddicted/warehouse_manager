@@ -1,12 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.Dto;
 using Warehouse_Manager.MVVM.View;
@@ -14,10 +11,9 @@ using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class RegisterViewModel : INotifyPropertyChanged
+    public class RegisterViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private readonly IAuthenticator _authenticator;
-        private readonly IProductService _productService;
         public RelayCommand BackButtonCommand { get; private set; }
         public RelayCommand RegisterButtonCommand { get; private set; }
 
@@ -98,6 +94,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         }
 
         private string _passwordConfirmation;
+
         public string PasswordConfirmation
         {
             get { return _passwordConfirmation; }
@@ -111,12 +108,11 @@ namespace Warehouse_Manager.MVVM.ViewModel
             }
         }
 
-        public RegisterViewModel(IAuthenticator authenticator, IProductService productService)
+        public RegisterViewModel(IAuthenticator authenticator)
         {
             BackButtonCommand = new RelayCommand(NavigateToLoginPage);
             RegisterButtonCommand = new RelayCommand(Register);
             _authenticator = authenticator;
-            _productService = productService;
         }
 
         private async void Register()
@@ -138,7 +134,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new Login(_authenticator, _productService));
+                var viewModel = (LoginViewModel)ViewModelFactory.CreateViewModel(typeof(LoginViewModel));
+                frame.Navigate(new LoginPage(viewModel));
             }
         }
     }

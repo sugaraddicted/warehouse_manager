@@ -24,22 +24,12 @@ namespace Warehouse_Manager.MVVM.View
     /// </summary>
     public partial class HomePage : Page
     {
-        private readonly IAuthenticator _authenticator;
-        private readonly IProductService _productService;
-
-        public HomePage(IProductService productService, IAuthenticator authenticator)
+        private readonly HomeViewModel _viewModel;
+        public HomePage(HomeViewModel viewModel)
         {
-            _productService = productService;
-            _authenticator = authenticator;
+            _viewModel = viewModel;
             InitializeComponent();
-            InitializeDataContext();
-        }
-
-        private async void InitializeDataContext()
-        {
-            var viewModel = new HomeViewModel(_productService, _authenticator);
-            await viewModel.GetProducts();
-            DataContext = viewModel;
+            DataContext = _viewModel;
         }
     }
 }

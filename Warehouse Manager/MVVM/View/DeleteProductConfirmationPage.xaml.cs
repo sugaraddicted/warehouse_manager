@@ -24,15 +24,9 @@ namespace Warehouse_Manager.MVVM.View
     /// </summary>
     public partial class DeleteProductConfirmationPage : Page
     {
-        private readonly IProductService _productService;
-        private readonly IAuthenticator _authenticator;
-
-        public DeleteProductConfirmationPage(IProductService productService, ProductDto productVM, IAuthenticator authenticator)
+        public DeleteProductConfirmationPage(DeleteProductViewModel viewModel)
         {
             InitializeComponent();
-            _productService = productService;
-            _authenticator = authenticator;
-            var viewModel = new DeleteProductViewModel(_productService, productVM, _authenticator);
             DataContext = viewModel;
         }
     }

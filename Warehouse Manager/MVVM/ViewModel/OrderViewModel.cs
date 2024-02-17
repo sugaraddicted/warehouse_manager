@@ -4,16 +4,18 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Views;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.MVVM.Model;
-using Warehouse_Manager.MVVM.View;
 using Warehouse_Manager.State.Authenticators;
+using Warehouse_Manager.MVVM.View;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class OrderViewModel
+    public class OrderViewModel : ViewModelBase
     {
-        private readonly IProductService _productService;
         private readonly IOrderService _orderService;
         private readonly IAuthenticator _authenticator;
 
@@ -21,14 +23,14 @@ namespace Warehouse_Manager.MVVM.ViewModel
         private ShippingAddress _shippingAddress;
 
         public event PropertyChangedEventHandler? PropertyChanged;
+        public RelayCommand BackButtonCommand { get; private set; }
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OrderViewModel(IProductService productService, IAuthenticator authenticator, IOrderService orderService)
+        public OrderViewModel(IAuthenticator authenticator, IOrderService orderService)
         {
-            _productService = productService;
             _authenticator = authenticator;
             _orderService = orderService;
 
@@ -44,9 +46,12 @@ namespace Warehouse_Manager.MVVM.ViewModel
                     cartItem.Product.SetImageSource();
                 }
             }
-            CartItems = cartItems;  
+            CartItems = cartItems;
+
+            BackButtonCommand = new RelayCommand(NavigateToShoppingCartPage);
         }
         private string _notes;
+
         public string Notes
         {
             get { return _notes; }
@@ -72,6 +77,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
                 }
             }
         }
+
         public List<ShoppingCartItem> CartItems
         {
             get { return _cartItems; }
@@ -112,7 +118,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new ShoppingCartView(_productService, _authenticator));
+                var viewModel = (ShoppingCartViewModel)ViewModelFactory.CreateViewModel(typeof(ShoppingCartViewModel));
+                frame.Navigate(new ShoppingCartPage(viewModel));
             }
         }
     }

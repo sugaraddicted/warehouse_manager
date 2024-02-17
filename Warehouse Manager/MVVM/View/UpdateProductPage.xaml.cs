@@ -24,13 +24,9 @@ namespace Warehouse_Manager.MVVM.View
     /// </summary>
     public partial class UpdateProductPage : Page
     {
-        private readonly IProductService _productService;
-        private readonly IAuthenticator _authenticator;
-        public UpdateProductPage(ProductDto productVM, IProductService productService)
+        public UpdateProductPage(UpdateProductViewModel viewModel)
         {
             InitializeComponent();
-            _productService = productService;
-            var viewModel = new UpdateProductViewModel(_productService, productVM);
             DataContext = viewModel;
         }
 

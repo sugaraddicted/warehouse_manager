@@ -23,15 +23,9 @@ namespace Warehouse_Manager.MVVM.View
     /// </summary>
     public partial class RegisterPage : Page
     {
-        private readonly IAuthenticator _authenticator;
-        private readonly IProductService _productService;
-
-        public RegisterPage(IAuthenticator authenticator, IProductService productService)
+        public RegisterPage(RegisterViewModel viewModel)
         {
             InitializeComponent();
-            _authenticator = authenticator;
-            _productService = productService;
-            var viewModel = new RegisterViewModel(_authenticator, _productService);
             DataContext = viewModel;
         }
     }

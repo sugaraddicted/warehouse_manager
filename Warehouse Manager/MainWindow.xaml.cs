@@ -15,10 +15,6 @@ using System.Windows.Shapes;
 using Warehouse_Manager.MVVM.ViewModel;
 using Warehouse_Manager.MVVM.View;
 using Warehouse_Manager.State.Authenticators;
-using Warehouse_Manager.Data.Services.AuthenticationServices;
-using Warehouse_Manager.MVVM.Model;
-using Warehouse_Manager.Data;
-using Microsoft.AspNetCore.Identity;
 using Warehouse_Manager.Data.Services.Interfaces;
 
 namespace Warehouse_Manager
@@ -30,19 +26,19 @@ namespace Warehouse_Manager
     {
         public static MainWindow Window;
         private readonly IAuthenticator _authenticator;
-        private readonly IProductService _productService;
         public MainWindow()
         {
             InitializeComponent();
             Hide();
         }
-        public MainWindow(IAuthenticator authenticator, IProductService productService)
+
+        public MainWindow(IAuthenticator authenticator)
         {
             _authenticator = authenticator;
-            _productService = productService;
             InitializeComponent();
             Window = this;
-            MainFrame.Content = new Login(_authenticator, _productService);
+            var viewModel = new LoginViewModel(_authenticator);
+            MainFrame.Content = new LoginPage(viewModel);
         }
 
         private void Move(object sender, RoutedEventArgs e)

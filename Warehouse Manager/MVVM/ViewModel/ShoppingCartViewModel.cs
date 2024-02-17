@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using Warehouse_Manager.Data.Services.Interfaces;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Views;
 using Warehouse_Manager.MVVM.Model;
 using Warehouse_Manager.MVVM.View;
 using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class ShoppingCartViewModel : INotifyPropertyChanged
+    public class ShoppingCartViewModel : ViewModelBase, INotifyPropertyChanged
     {
-        private readonly IProductService _productService;
         private readonly IAuthenticator _authenticator;
 
         private List<ShoppingCartItem> _cartItems;
@@ -37,16 +37,17 @@ namespace Warehouse_Manager.MVVM.ViewModel
         }
 
         public RelayCommand BackButtonCommand { get; private set; }
+        public RelayCommand OrderButtonCommand { get; private set; }
         public RelayCommand<ShoppingCartItem> DecreaseQuantityCommand { get; private set; }
         public RelayCommand<ShoppingCartItem> IncreaseQuantityCommand { get; private set; }
-        public ShoppingCartViewModel(IProductService productService, IAuthenticator authenticator)
+        public ShoppingCartViewModel(IAuthenticator authenticator)
         {
-            _productService = productService;
             _authenticator = authenticator;
             CartItems = new List<ShoppingCartItem>();
             UpdateItems();
 
             BackButtonCommand = new RelayCommand(NavigateToMainPage);
+            OrderButtonCommand = new RelayCommand(NavigateToOrderPage);
             DecreaseQuantityCommand = new RelayCommand<ShoppingCartItem>(DecreaseQuantity);
             IncreaseQuantityCommand = new RelayCommand<ShoppingCartItem>(IncreaseQuantity);
         }
@@ -55,7 +56,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new HomePage(_productService, _authenticator));
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
             }
         }
 
@@ -91,6 +93,15 @@ namespace Warehouse_Manager.MVVM.ViewModel
             {
 
                 throw;
+            }
+        }
+
+        public void NavigateToOrderPage()
+        {
+            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            {
+                var viewModel = (OrderViewModel)ViewModelFactory.CreateViewModel(typeof(OrderViewModel));
+                frame.Navigate(new OrderPage(viewModel));
             }
         }
     }

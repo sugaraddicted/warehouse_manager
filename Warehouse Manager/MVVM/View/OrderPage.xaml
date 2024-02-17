@@ -26,7 +26,7 @@
             Grid.Row="0"
             Height="30"
             Width="80" 
-            Margin="10,10,270,10"
+            Margin="10 0 270 0"
             Background="#141F21"
             BorderBrush="Transparent"
             Content="Back"

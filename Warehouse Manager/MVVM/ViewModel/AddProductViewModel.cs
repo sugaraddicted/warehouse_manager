@@ -2,29 +2,22 @@
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight.Views;
 using Warehouse_Manager.Data;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.Dto;
 using Warehouse_Manager.MVVM.View;
-using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class AddProductViewModel : INotifyPropertyChanged
+    public class AddProductViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private readonly IProductService _productService;
-        private readonly IAuthenticator _authenticator;
         public ProductDto productViewModel { get; set; } = new ProductDto();
         public RelayCommand BackButtonCommand { get; private set; }
         public RelayCommand UploadImageButtonCommand { get; private set; }
@@ -57,11 +50,9 @@ namespace Warehouse_Manager.MVVM.ViewModel
                 OnPropertyChanged(nameof(ImageSource));
             }
         }
-
-        public AddProductViewModel(IProductService productService, IAuthenticator authenticator)
+        public AddProductViewModel(IProductService productService)
         {
             _productService = productService;
-            _authenticator = authenticator;
             BackButtonCommand = new RelayCommand(NavigateToAdminHomePage);
             UploadImageButtonCommand = new RelayCommand(UploadImage);
             AddProuctButtonCommand = new RelayCommand(AddProduct);
@@ -95,7 +86,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new HomePage(_productService, _authenticator));
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
             }
         }
         private void UploadImage()

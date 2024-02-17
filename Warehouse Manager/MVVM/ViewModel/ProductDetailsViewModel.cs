@@ -1,28 +1,23 @@
 ﻿using GalaSoft.MvvmLight.Command;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using GalaSoft.MvvmLight;
 using Warehouse_Manager.Data;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.Dto;
-using Warehouse_Manager.MVVM.Model;
 using Warehouse_Manager.MVVM.View;
 using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class ProductDetailsViewModel : INotifyPropertyChanged
+    public class ProductDetailsViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private readonly IProductService _productService;
         private readonly IAuthenticator _authenticator;
-
+        
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
@@ -54,7 +49,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new DeleteProductConfirmationPage(_productService, model, _authenticator)) ;
+                var viewModel = new DeleteProductViewModel(_productService, model, _authenticator);
+                frame.Navigate(new DeleteProductConfirmationPage(viewModel));
             }
         }
 
@@ -62,7 +58,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new UpdateProductPage(model, _productService));
+                var viewModel = new UpdateProductViewModel(_productService, model, _authenticator);
+                frame.Navigate(new UpdateProductPage(viewModel));
             }
         }
 
@@ -70,7 +67,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new HomePage(_productService, _authenticator));
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
             }
         }
 

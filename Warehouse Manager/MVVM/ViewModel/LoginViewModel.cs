@@ -4,14 +4,13 @@ using GalaSoft.MvvmLight.Command;
 using Warehouse_Manager.MVVM.View;
 using Warehouse_Manager.State.Authenticators;
 using System.ComponentModel;
-using Warehouse_Manager.Data.Services.Interfaces;
+using GalaSoft.MvvmLight;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class LoginViewModel : INotifyPropertyChanged
+    public class LoginViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private readonly IAuthenticator _authenticator;
-        private readonly IProductService _productService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
@@ -50,10 +49,9 @@ namespace Warehouse_Manager.MVVM.ViewModel
         public RelayCommand SignupButtonCommand { get; private set; }
         public RelayCommand ContinueButtonCommand { get; private set; }
 
-        public LoginViewModel(IAuthenticator authenticator, IProductService productService)
+        public LoginViewModel(IAuthenticator authenticator)
         {
             _authenticator = authenticator;
-            _productService = productService;
             SignupButtonCommand = new RelayCommand(NavigateToRegisterPage);
             ContinueButtonCommand = new RelayCommand(NavigateToHomePage);
             LoginButtonCommand = new RelayCommand(Login);
@@ -63,7 +61,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new RegisterPage(_authenticator, _productService));
+                frame.Navigate(ViewModelFactory.CreateViewModel(typeof(RegisterViewModel)));
             }
         }
 
@@ -71,7 +69,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new HomePage(_productService, _authenticator));
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
             }
         }
 

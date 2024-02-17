@@ -1,17 +1,9 @@
-﻿using GalaSoft.MvvmLight.Command;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
-using Warehouse_Manager.Data;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.Dto;
 using Warehouse_Manager.MVVM.View;
@@ -19,10 +11,11 @@ using Warehouse_Manager.State.Authenticators;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
-    public class DeleteProductViewModel : INotifyPropertyChanged
+    public class DeleteProductViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private readonly IProductService _productService;
         private readonly IAuthenticator _authenticator;
+
         public ProductDto Product { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -36,8 +29,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         public DeleteProductViewModel(IProductService productService, ProductDto productVM, IAuthenticator authenticator)
         {
             _productService = productService;
-            _authenticator = authenticator;
             Product = productVM;
+            _authenticator = authenticator;
             BackButtonCommand = new RelayCommand<ProductDto>(NavigateToDetailsPage);
             DeleteButtonCommand = new RelayCommand(DeleteProduct);
         }
@@ -46,14 +39,16 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new ProductPage(_productService, productVM, _authenticator));
+                var viewModel = new ProductDetailsViewModel(_productService, productVM, _authenticator);
+                frame.Navigate(new ProductPage(viewModel));
             }
         }
         private void NavigateToHomePage()
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(new HomePage(_productService, _authenticator));
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
             }
         }
         private async void DeleteProduct()
