@@ -62,13 +62,26 @@
                 Height="30"
                 Width="80" 
                 Background="#141F21"
+                Foreground="White"
                 BorderBrush="Transparent"
                 Content="Edit"
-                HorizontalContentAlignment="Center"/>
-            <Button
+                HorizontalContentAlignment="Center">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UserRole}" Value="admin">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button
                 Command="{Binding  DeleteButtonCommand}"
                 CommandParameter="{Binding Product}"
                 Grid.Column="1"
+                Foreground="White"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
                 Margin="15, 0, 0,0"
@@ -77,8 +90,19 @@
                 Background="#141F21"
                 BorderBrush="Transparent"
                 Content="Delete"
-                HorizontalContentAlignment="Center"/>
-                </Grid>
+                HorizontalContentAlignment="Center">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding UserRole}" Value="admin">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
         </StackPanel>
         <StackPanel Grid.Column="1" Grid.Row="1">
 

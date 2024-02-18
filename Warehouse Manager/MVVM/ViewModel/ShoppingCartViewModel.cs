@@ -89,7 +89,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
                 }
                 CartItems = cartItems;
             }
-            catch (System.Exception)
+            catch (System.NullReferenceException)
             {
 
                 throw;

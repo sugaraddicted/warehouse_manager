@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
 using Warehouse_Manager.Data;
 using Warehouse_Manager.Data.Services.AuthenticationServices;
@@ -23,11 +19,12 @@ namespace Warehouse_Manager.State.Authenticators
             _dbContext = dbContext;
         }
 
-        public User CurrentUser { get; private set; }
+        public User? CurrentUser { get; private set; }
 
-        public ShoppingCart ShoppingCart { get; set; }
+        public ShoppingCart? ShoppingCart { get; set; }
 
-        public bool IsLogedIn => CurrentUser != null;
+        public bool IsLogedIn { get; set;
+        }
 
         public async Task<bool> Login(string username, string password)
         {
@@ -47,6 +44,8 @@ namespace Warehouse_Manager.State.Authenticators
         public void Logout()
         {
             CurrentUser = null;
+            ShoppingCart = null;
+            IsLogedIn = false;
         }
 
         public async Task<RegistrationResult> Register(RegisterDto registerDto, string role)

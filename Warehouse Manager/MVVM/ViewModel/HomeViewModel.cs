@@ -19,12 +19,19 @@ namespace Warehouse_Manager.MVVM.ViewModel
 
         public RelayCommand AddProductButtonCommand { get; private set; }
         public RelayCommand CartButtonCommand { get; set; }
+        public RelayCommand LogoutButtonCommand { get; set; }
+        public RelayCommand LoginButtonCommand { get; set; }
         public ICommand DetailsButtonCommand { get; private set; }
         public event PropertyChangedEventHandler? PropertyChanged;
 
         private List<ProductDto> _products = new List<ProductDto>();
-        
 
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public string UserRole { get; set; }
         public List<ProductDto> Products
         {
             get { return _products; }
@@ -39,20 +46,37 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             _productService = productService;
             _authenticator = authenticator;
+            if (_authenticator.CurrentUser == null)
+            {
+                UserRole = "Unauthorized";
+            }
+            else
+            {
+                UserRole = _authenticator.CurrentUser.UserRole;
+            }
 
             GetProducts();
 
             DetailsButtonCommand = new RelayCommand<ProductDto>(NavigateToDetailsPage);
             AddProductButtonCommand = new RelayCommand(NavigateToAddProductPage);
             CartButtonCommand = new RelayCommand(NavigateToShoppingCartPage);
+            LogoutButtonCommand = new RelayCommand(Logout);
+            LoginButtonCommand = new RelayCommand(NavigateToLoginPage);
         }
 
         private void NavigateToShoppingCartPage()
         {
-            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            if (_authenticator.ShoppingCart == null)
             {
-                var viewModel = (ShoppingCartViewModel)ViewModelFactory.CreateViewModel(typeof(ShoppingCartViewModel));
-                frame.Navigate(new ShoppingCartPage(viewModel));
+                MessageBox.Show("Login or register to use shopping cart.");
+            }
+            else
+            {
+                if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+                {
+                    var viewModel = (ShoppingCartViewModel)ViewModelFactory.CreateViewModel(typeof(ShoppingCartViewModel));
+                    frame.Navigate(new ShoppingCartPage(viewModel));
+                }
             }
         }
 
@@ -74,9 +98,19 @@ namespace Warehouse_Manager.MVVM.ViewModel
             } 
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        public void Logout()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            _authenticator.Logout();
+            NavigateToLoginPage();
+        }
+
+        private void NavigateToLoginPage()
+        {
+            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            {
+                var viewModel = (LoginViewModel)ViewModelFactory.CreateViewModel(typeof(LoginViewModel));
+                frame.Navigate(new LoginPage(viewModel));
+            }
         }
 
         public async void GetProducts()

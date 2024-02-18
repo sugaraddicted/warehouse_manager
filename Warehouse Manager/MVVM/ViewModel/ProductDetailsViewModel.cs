@@ -20,6 +20,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         
         public string Name { get; set; }
         public string Description { get; set; }
+        public string UserRole { get; set; }
         public decimal Price { get; set; }
         public ImageSource Image { get; set; }
         public ProductDto Product { get; set; }
@@ -34,6 +35,16 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             _authenticator = authenticator;
             _productService = productService;
+
+            if (_authenticator.CurrentUser == null)
+            {
+                UserRole = "Unauthorized";
+            }
+            else
+            {
+                UserRole = _authenticator.CurrentUser.UserRole;
+            }
+
             Product = productVM;
             Name = productVM.Name;
             Description = productVM.Description;

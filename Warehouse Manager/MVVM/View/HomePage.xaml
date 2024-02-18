@@ -30,7 +30,18 @@
                 Content="Add Product"
                 Foreground="#2C4247"
                 HorizontalContentAlignment="Center"
-                Margin="10"/>
+                Margin="10">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserRole}" Value="admin">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
             <Button
                 x:Name="CartButton"
                 Command="{Binding CartButtonCommand}"
@@ -44,6 +55,54 @@
                 Foreground="#2C4247"
                 HorizontalContentAlignment="Center"
                 Margin="10"/>
+            <Button
+                x:Name="LogoutButton"
+                Command="{Binding LogoutButtonCommand}"
+                VerticalAlignment="Center"
+                Height="40"
+                Width="110"
+                Padding ="1"
+                Background="#D9D9D9"
+                BorderBrush="Transparent"
+                Content="Logout"
+                Foreground="#2C4247"
+                HorizontalContentAlignment="Center"
+                Margin="10">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserRole}" Value="Unauthorized">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button
+                x:Name="LodinButton"
+                Command="{Binding LoginButtonCommand}"
+                VerticalAlignment="Center"
+                Height="40"
+                Width="110"
+                Padding ="1"
+                Background="#D9D9D9"
+                BorderBrush="Transparent"
+                Content="Login or register"
+                Foreground="#2C4247"
+                HorizontalContentAlignment="Center"
+                Margin="10">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserRole}" Value="Unauthorized">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
         </StackPanel>
 
         <ListView Grid.Column="1" Grid.RowSpan ="2" Grid.Row="1" MinWidth="700" Height="440" ItemsSource="{Binding Products}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0">

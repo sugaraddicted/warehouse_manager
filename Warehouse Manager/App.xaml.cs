@@ -41,7 +41,7 @@ namespace Warehouse_Manager
 
             services.AddDbContext<AppDbContext>(option => option.UseSqlServer("Data Source=DESKTOP-7RLU0G4;Initial Catalog=warehouse;Integrated Security=True"));
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddSingleton<IAuthenticator, Authenticator>();
+            services.AddScoped<IAuthenticator, Authenticator>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -50,6 +50,7 @@ namespace Warehouse_Manager
 
             services.AddTransient<ShoppingCartViewModel>();
             services.AddScoped<LoginViewModel>();
+
             services.AddScoped<RegisterViewModel>();
             services.AddTransient<AddProductViewModel>();
             services.AddTransient<DeleteProductViewModel>();
