@@ -5,6 +5,8 @@ using Warehouse_Manager.MVVM.View;
 using Warehouse_Manager.State.Authenticators;
 using System.ComponentModel;
 using GalaSoft.MvvmLight;
+using System.Drawing;
+using System;
 
 namespace Warehouse_Manager.MVVM.ViewModel
 {
@@ -61,7 +63,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
         {
             if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
             {
-                frame.Navigate(ViewModelFactory.CreateViewModel(typeof(RegisterViewModel)));
+                var viewModel = (RegisterViewModel)ViewModelFactory.CreateViewModel(typeof(RegisterViewModel));
+                frame.Navigate(new RegisterPage(viewModel));
             }
         }
 
@@ -76,9 +79,18 @@ namespace Warehouse_Manager.MVVM.ViewModel
 
         private async void Login()
         {
-            await _authenticator.Login(Username, Password);
-            NavigateToHomePage();
+            var result = await _authenticator.Login(Username, Password);
+
+            if (result)
+            {
+                NavigateToHomePage();
+            }
+            else
+            {
+                MessageBox.Show("Invalid cradentials, try again");
+            }
         }
+
         private void ExitApplication()
         {
             Application.Current.Shutdown();

@@ -11,7 +11,7 @@ namespace Warehouse_Manager.Data.Services.Interfaces
 {
     public interface IAuthenticationService
     {
-        Task<RegistrationResult> Regicter(RegisterDto registerDto, string role);
+        Task<RegistrationResult> Register(RegisterDto registerDto, string role);
         Task<User> Login(string username, string password);
     }
 }

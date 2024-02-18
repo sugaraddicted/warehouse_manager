@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 using Warehouse_Manager.MVVM.Model;
 using Warehouse_Manager.Exeptions;
 using Warehouse_Manager.Dto;
@@ -12,7 +13,8 @@ namespace Warehouse_Manager.Data.Services.AuthenticationServices
         Success,
         PasswordsDoNotMatch,
         EmailAlreadyUsed,
-        UsernameAlreadyUsed
+        UsernameAlreadyUsed,
+        NotAllFieldsAreFilled
     }
     public class AuthenticationService : IAuthenticationService
     {
@@ -33,21 +35,49 @@ namespace Warehouse_Manager.Data.Services.AuthenticationServices
                 throw new UserNotFoundExeption(username);
             }
 
-            var verificationResult = _passwordHasher.VerifyHashedPassword(storedUser, storedUser.PasswordHash, password);
-
-            if(verificationResult != PasswordVerificationResult.Success)
+            try
             {
-                throw new InvalidPasswordExeption(username, password);
+                var verificationResult = _passwordHasher.VerifyHashedPassword(storedUser, storedUser.PasswordHash, password);
+                if (verificationResult != PasswordVerificationResult.Success)
+                {
+                    throw new InvalidPasswordExeption(username, password);
+                }
+                return storedUser;
             }
+            catch (UserNotFoundExeption ex)
+            {
+                throw ex;
+            } 
             return storedUser;
         }
 
-        public async Task<RegistrationResult> Regicter(RegisterDto registerDto, string role)
+        public async Task<RegistrationResult> Register(RegisterDto registerDto, string role)
         {
             RegistrationResult result = RegistrationResult.Success;
             if(registerDto.Password != registerDto.PasswordConfirmation)
             {
                 result = RegistrationResult.PasswordsDoNotMatch;
+            }
+
+            if(registerDto.Firstname.IsNullOrEmpty())
+            {
+                result = RegistrationResult.NotAllFieldsAreFilled;
+            }
+            if (registerDto.Lastname.IsNullOrEmpty())
+            {
+                result = RegistrationResult.NotAllFieldsAreFilled;
+            }
+            if (registerDto.Username.IsNullOrEmpty())
+            {
+                result = RegistrationResult.NotAllFieldsAreFilled;
+            }
+            if (registerDto.Email.IsNullOrEmpty())
+            {
+                result = RegistrationResult.NotAllFieldsAreFilled;
+            }
+            if (registerDto.Password.IsNullOrEmpty())
+            {
+                result = RegistrationResult.NotAllFieldsAreFilled;
             }
 
             if (await _userService.GetByUsernameAsync(registerDto.Username) != null)
@@ -68,6 +98,7 @@ namespace Warehouse_Manager.Data.Services.AuthenticationServices
                     Username = registerDto.Username,
                     Firstname = registerDto.Firstname,
                     Lastname = registerDto.Lastname,
+                    UserRole = role
                 };
                 string hash = _passwordHasher.HashPassword(user, registerDto.Password);
                 user.PasswordHash = hash;

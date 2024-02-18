@@ -32,17 +32,16 @@ namespace Warehouse_Manager.State.Authenticators
         public async Task<bool> Login(string username, string password)
         {
             bool success = true;
-           // try
-           // {
+           try
+            {
                 CurrentUser = await _authenticationService.Login(username, password);
                 ShoppingCart = new ShoppingCart(_dbContext) { ShoppingCartId = CurrentUser.Id.ToString() };
-            //}
-           // catch (Exception)
-           // {
-            //    success = false;
-           // }
+            }
+            catch (Exception)
+            { 
+               success = false;
+            }
             return success;
-
         }
 
         public void Logout()
@@ -52,7 +51,7 @@ namespace Warehouse_Manager.State.Authenticators
 
         public async Task<RegistrationResult> Register(RegisterDto registerDto, string role)
         {
-            return await _authenticationService.Regicter(registerDto, role);
+            return await _authenticationService.Register(registerDto, role);
         }
     }
 }

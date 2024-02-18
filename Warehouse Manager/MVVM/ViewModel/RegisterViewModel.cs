@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Views;
+using Warehouse_Manager.Data.Services.AuthenticationServices;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.Dto;
 using Warehouse_Manager.MVVM.View;
@@ -126,8 +127,35 @@ namespace Warehouse_Manager.MVVM.ViewModel
             registerDto.Password = Password;
             registerDto.PasswordConfirmation = PasswordConfirmation;
 
-            await _authenticator.Register(registerDto, "NotAdmin");
+            var result = await _authenticator.Register(registerDto, "NotAdmin");
 
+            var message = result switch
+            {
+                RegistrationResult.EmailAlreadyUsed => "Email is already used",
+                RegistrationResult.PasswordsDoNotMatch => "Passwords do not match",
+                RegistrationResult.UsernameAlreadyUsed => "Username is already used",
+                RegistrationResult.NotAllFieldsAreFilled => "Not all fields are filled",
+                _ => null
+            };
+
+            if (message != null)
+            {
+                MessageBox.Show(message);
+            }
+            else
+            {
+                await _authenticator.Login(registerDto.Username, registerDto.Password);
+                NavigateToHomePage();
+            }
+        }
+
+        private void NavigateToHomePage()
+        {
+            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            {
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
+            }
         }
 
         private void NavigateToLoginPage()

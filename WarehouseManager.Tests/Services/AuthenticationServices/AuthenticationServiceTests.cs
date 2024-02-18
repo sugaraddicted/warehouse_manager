@@ -94,7 +94,7 @@ namespace WarehouseManager.Tests.Services.AuthenticationServices
             };
 
             //Act
-            RegistrationResult actual = await _authenticationService.Regicter(registerDto, It.IsAny<string>());
+            RegistrationResult actual = await _authenticationService.Register(registerDto, It.IsAny<string>());
             
             //Assert
             Assert.AreEqual(expectedResult, actual);
@@ -118,7 +118,7 @@ namespace WarehouseManager.Tests.Services.AuthenticationServices
             };
 
             //Act
-            RegistrationResult actual = await _authenticationService.Regicter(registerDto, It.IsAny<string>());
+            RegistrationResult actual = await _authenticationService.Register(registerDto, It.IsAny<string>());
 
             //Assert
             Assert.AreEqual(expectedResult, actual);
@@ -142,7 +142,7 @@ namespace WarehouseManager.Tests.Services.AuthenticationServices
             };
 
             //Act
-            RegistrationResult actual = await _authenticationService.Regicter(registerDto, It.IsAny<string>());
+            RegistrationResult actual = await _authenticationService.Register(registerDto, It.IsAny<string>());
 
             //Assert
             Assert.AreEqual(expectedResult, actual);
@@ -164,7 +164,7 @@ namespace WarehouseManager.Tests.Services.AuthenticationServices
             };
 
             //Act
-            RegistrationResult actual = await _authenticationService.Regicter(registerDto, It.IsAny<string>());
+            RegistrationResult actual = await _authenticationService.Register(registerDto, It.IsAny<string>());
 
             //Assert
             Assert.AreEqual(expectedResult, actual);
