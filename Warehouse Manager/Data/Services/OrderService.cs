@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using Warehouse_Manager.Data.Base;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.MVVM.Model;
-using Warehouse_Manager.MVVM.ViewModel;
 
 namespace Warehouse_Manager.Data.Services
 {
@@ -31,7 +26,6 @@ namespace Warehouse_Manager.Data.Services
 
             return orders;
         }
-
         public async Task StoreOrderAsync(Order order)
         {
             await _context.Orders.AddAsync(order);
@@ -39,9 +33,12 @@ namespace Warehouse_Manager.Data.Services
 
             foreach (var item in order.OrderItems)
             {
+                item.Id = 0;
                 item.OrderId = order.Id;
-                await _context.AddAsync(item);
+                await _context.OrderItems.AddAsync(item);
             }
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
         }
     }

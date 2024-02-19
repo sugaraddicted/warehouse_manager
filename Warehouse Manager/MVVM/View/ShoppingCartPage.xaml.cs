@@ -10,7 +10,7 @@ using Warehouse_Manager.State.Authenticators;
 namespace Warehouse_Manager.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for ShoppingCartPage.xaml
+    /// Interaction logic for OrdersPage.xaml
     /// </summary>
     public partial class ShoppingCartPage : Page
     {

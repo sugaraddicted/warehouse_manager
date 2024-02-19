@@ -17,6 +17,8 @@ namespace Warehouse_Manager.MVVM.ViewModel
 
         private List<ShoppingCartItem> _cartItems;
 
+        private decimal Total { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -46,6 +48,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
             CartItems = new List<ShoppingCartItem>();
             UpdateItems();
 
+            Total = _authenticator.ShoppingCart.GetShoppingCartTotal();
             BackButtonCommand = new RelayCommand(NavigateToMainPage);
             OrderButtonCommand = new RelayCommand(NavigateToOrderPage);
             DecreaseQuantityCommand = new RelayCommand<ShoppingCartItem>(DecreaseQuantity);

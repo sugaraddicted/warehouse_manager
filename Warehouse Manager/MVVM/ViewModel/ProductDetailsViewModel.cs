@@ -85,10 +85,20 @@ namespace Warehouse_Manager.MVVM.ViewModel
 
         private async void AddToShoppingCart()
         {
-            var product = await _productService.GetByIdAsync(Product.Id);
-            if (product != null)
+            if (_authenticator.ShoppingCart == null)
             {
-                _authenticator.ShoppingCart.AddItemToCart(product);
+                MessageBox.Show("Login or register to use shopping cart.");
+            }
+            else
+            {
+                if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+                {
+                    var product = await _productService.GetByIdAsync(Product.Id);
+                    if (product != null)
+                    {
+                        _authenticator.ShoppingCart.AddItemToCart(product);
+                    }
+                }
             }
         }
     }

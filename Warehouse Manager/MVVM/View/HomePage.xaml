@@ -56,6 +56,30 @@
                 HorizontalContentAlignment="Center"
                 Margin="10"/>
             <Button
+                x:Name="OrdersButton"
+                Command="{Binding OrdersButtonCommand}"
+                VerticalAlignment="Center"
+                Height="40"
+                Width="110"
+                Padding ="1"
+                Background="#D9D9D9"
+                BorderBrush="Transparent"
+                Content="Orders"
+                Foreground="#2C4247"
+                HorizontalContentAlignment="Center"
+                Margin="10">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding UserRole}" Value="Unauthorized">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <Button
                 x:Name="LogoutButton"
                 Command="{Binding LogoutButtonCommand}"
                 VerticalAlignment="Center"

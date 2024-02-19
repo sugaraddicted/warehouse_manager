@@ -23,6 +23,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
                 Type t when t == typeof(ShoppingCartViewModel) => _serviceProvider.GetService<ShoppingCartViewModel>(),
                 Type t when t == typeof(RegisterViewModel) => _serviceProvider.GetService<RegisterViewModel>(),
                 Type t when t == typeof(LoginViewModel) => _serviceProvider.GetService<LoginViewModel>(),
+                Type t when t == typeof(OrdersViewModel) => _serviceProvider.GetService<OrdersViewModel>(),
                 // Add more cases for other page types
                 _ => throw new ArgumentException($"Unsupported page type: {pageType.Name}", nameof(pageType))
             };

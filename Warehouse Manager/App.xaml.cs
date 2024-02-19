@@ -20,6 +20,7 @@ namespace Warehouse_Manager
     /// </summary>
     public partial class App : Application
     {
+        [STAThread]
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -29,6 +30,8 @@ namespace Warehouse_Manager
             Window window = serviceProvider.GetRequiredService<MainWindow>();
             window.Show();
         }
+
+        [STAThread]
         private IServiceProvider CreateServiceProvider()
         {
 
@@ -44,6 +47,7 @@ namespace Warehouse_Manager
             services.AddScoped<IAuthenticator, Authenticator>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IShippingAddressService, ShippingAddressService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -56,7 +60,8 @@ namespace Warehouse_Manager
             services.AddTransient<DeleteProductViewModel>();
             services.AddTransient<UpdateProductViewModel>();
             services.AddTransient<HomeViewModel>();
-            services.AddScoped<OrderViewModel>();
+            services.AddTransient<OrderViewModel>();
+            services.AddTransient<OrdersViewModel>();
             services.AddTransient<ProductDetailsViewModel>();
 
             services.AddScoped<RegisterPage>();
@@ -66,7 +71,7 @@ namespace Warehouse_Manager
             services.AddTransient<UpdateProductPage>();
             services.AddScoped<LoginPage>();
             services.AddTransient<DeleteProductConfirmationPage>();
-            services.AddTransient<ShoppingCartPage>();
+            services.AddTransient<OrdersPage>();
 
             return services.BuildServiceProvider();
         }

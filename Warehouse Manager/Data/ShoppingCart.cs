@@ -9,7 +9,6 @@ namespace Warehouse_Manager.MVVM.Model
     public class ShoppingCart
     {
         private AppDbContext _context { get; set; }
-
         public string ShoppingCartId { get; set; }
         public List<ShoppingCartItem> ShoppingCartItems { get; set; }
 

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Warehouse_Manager.Data.Base;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.MVVM.Model;
-using Warehouse_Manager.MVVM.ViewModel;
-
 namespace Warehouse_Manager.Data.Services
 {
     public class UserService : EntityBaseRepository<User>, IUserService

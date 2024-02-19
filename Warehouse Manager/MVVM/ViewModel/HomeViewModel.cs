@@ -21,6 +21,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         public RelayCommand CartButtonCommand { get; set; }
         public RelayCommand LogoutButtonCommand { get; set; }
         public RelayCommand LoginButtonCommand { get; set; }
+        public RelayCommand OrdersButtonCommand { get; set; }
         public ICommand DetailsButtonCommand { get; private set; }
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -62,6 +63,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
             CartButtonCommand = new RelayCommand(NavigateToShoppingCartPage);
             LogoutButtonCommand = new RelayCommand(Logout);
             LoginButtonCommand = new RelayCommand(NavigateToLoginPage);
+            OrdersButtonCommand = new RelayCommand(NavigateToOrdersPage);
         }
 
         private void NavigateToShoppingCartPage()
@@ -86,6 +88,15 @@ namespace Warehouse_Manager.MVVM.ViewModel
             {
                 var viewModel = new ProductDetailsViewModel(_productService, productVM, _authenticator);
                 frame.Navigate(new ProductPage(viewModel));
+            }
+        }
+
+        private void NavigateToOrdersPage()
+        {
+            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            {
+                var viewModel = (OrdersViewModel)ViewModelFactory.CreateViewModel(typeof(OrdersViewModel));
+                frame.Navigate(new OrdersPage(viewModel));
             }
         }
 
