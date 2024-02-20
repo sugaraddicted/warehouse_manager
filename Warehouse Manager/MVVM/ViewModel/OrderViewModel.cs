@@ -17,6 +17,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         private readonly IOrderService _orderService;
         private readonly IAuthenticator _authenticator;
         private readonly IShippingAddressService _shippingAddressService;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
 
         private List<ShoppingCartItem> _cartItems;
         private decimal Total { get; set; }
@@ -29,11 +30,12 @@ namespace Warehouse_Manager.MVVM.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OrderViewModel(IAuthenticator authenticator, IOrderService orderService, IShippingAddressService shippingAddressService)
+        public OrderViewModel(IAuthenticator authenticator, IOrderService orderService, IShippingAddressService shippingAddressService, IShoppingCartItemService shoppingCartItemService)
         {
             _authenticator = authenticator;
             _orderService = orderService;
             _shippingAddressService = shippingAddressService;
+            _shoppingCartItemService = shoppingCartItemService;
 
             var cartItems = _authenticator.ShoppingCart.GetShoppingCartItems();
             foreach (var cartItem in cartItems)
@@ -176,59 +178,64 @@ namespace Warehouse_Manager.MVVM.ViewModel
             }
         }
 
-        public List<ShoppingCartItem> CartItems
-        {
-            get { return _cartItems; }
-            set
-            {
-                if (_cartItems != value)
-                {
-                    _cartItems = value;
-                    OnPropertyChanged(nameof(CartItems));
-                }
-            }
-        }
+        public List<ShoppingCartItem> CartItems { get; set; }
 
         public async void PlaceOrder()
         {
-            Order order = new Order();
-            List<OrderItem> orderItems = new List<OrderItem>();
-
-            // Populate order items
-            foreach (var item in CartItems)
+            if (ValidateFields())
             {
-                var orderItem = new OrderItem()
+                Order order = new Order();
+                List<OrderItem> orderItems = new List<OrderItem>();
+
+                // Populate order items
+                foreach (var item in CartItems)
                 {
-                    Quantity = item.Quantity,
-                    ProductId = item.Product.Id,
-                    Price = item.Product.Price
+                    var orderItem = new OrderItem()
+                    {
+                        Quantity = item.Quantity,
+                        ProductId = item.Product.Id,
+                        Price = item.Product.Price
+                    };
+                    orderItems.Add(orderItem);
+                }
+
+                order.OrderItems = orderItems;
+                order.OrderDate = DateTime.Now;
+                order.UserId = _authenticator.CurrentUser.Id;
+                order.CustomerNotes = Notes;
+                order.Total = Total;
+
+                await _orderService.StoreOrderAsync(order);
+
+                // Delete items from the shopping cart after the order is stored
+                foreach (var item in CartItems)
+                {
+                    await _shoppingCartItemService.DeleteAsync(item.Id);
+                }
+
+                ShippingAddress shippingAddress = new ShippingAddress()
+                {
+                    FirstName = Firstname,
+                    LastName = Lastname,
+                    PhoneNumber = PhoneNumber,
+                    Region = Region,
+                    City = City,
+                    Street = Street,
+                    ZipCode = ZipCode,
+                    Building = Building,
+                    OrderId = order.Id
                 };
-                orderItems.Add(orderItem);
+
+                await _shippingAddressService.AddAsync(shippingAddress);
+                order.ShippingAddressId = shippingAddress.Id;
+                await _orderService.UpdateAsync(order.Id, order);
+
+                NavigateToMainPage();
             }
-
-            order.OrderItems = orderItems;
-            order.OrderDate = DateTime.Now;
-            order.UserId = _authenticator.CurrentUser.Id;
-            order.CustomerNotes = Notes;
-            order.Total = (double)Total;
-
-            await _orderService.StoreOrderAsync(order);
-            ShippingAddress shippingAddress = new ShippingAddress()
+            else
             {
-                FirstName = Firstname,
-                LastName = Lastname,
-                PhoneNumber = PhoneNumber,
-                Region = Region,
-                City = City,
-                Street = Street,
-                ZipCode = ZipCode,
-                Building = Building,
-                OrderId = order.Id
-            };
-
-            await _shippingAddressService.AddAsync(shippingAddress);
-            order.ShippingAddressId = shippingAddress.Id;
-            await _orderService.UpdateAsync(order.Id, order);
+                MessageBox.Show("Not all fields are filled");
+            }
         }
 
         private void NavigateToShoppingCartPage()
@@ -238,6 +245,55 @@ namespace Warehouse_Manager.MVVM.ViewModel
                 var viewModel = (ShoppingCartViewModel)ViewModelFactory.CreateViewModel(typeof(ShoppingCartViewModel));
                 frame.Navigate(new ShoppingCartPage(viewModel));
             }
+        }
+
+        private void NavigateToMainPage()
+        {
+            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            {
+                var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
+                frame.Navigate(new HomePage(viewModel));
+            }
+        }
+
+        public bool ValidateFields()
+        {
+            bool result = true;
+
+            if (string.IsNullOrEmpty(Firstname))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(Lastname))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(PhoneNumber))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(Region))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(City))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(Street))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(ZipCode))
+            {
+                result = false;
+            }
+            if (string.IsNullOrEmpty(Notes))
+            {
+                result = false;
+            }
+
+            return result;
         }
     }
 }

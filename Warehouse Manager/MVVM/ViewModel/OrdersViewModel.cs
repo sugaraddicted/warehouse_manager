@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Warehouse_Manager.Data.Services.Interfaces;
 using Warehouse_Manager.MVVM.Model;
 using Warehouse_Manager.MVVM.View;
@@ -29,6 +30,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
         }
 
         public RelayCommand BackButtonCommand { get; private set; }
+        public ICommand DetailsButtonCommand { get; private set; }
 
         public OrdersViewModel(IAuthenticator authenticator, IOrderService orderService)
         {
@@ -36,6 +38,7 @@ namespace Warehouse_Manager.MVVM.ViewModel
             _orderService = orderService;
             GetOrders();
             BackButtonCommand = new RelayCommand(NavigateToMainPage);
+            DetailsButtonCommand = new RelayCommand<int>(NavigateToOrderDetailsPage);
         }
 
         private void NavigateToMainPage()
@@ -44,6 +47,15 @@ namespace Warehouse_Manager.MVVM.ViewModel
             {
                 var viewModel = (HomeViewModel)ViewModelFactory.CreateViewModel(typeof(HomeViewModel));
                 frame.Navigate(new HomePage(viewModel));
+            }
+        }
+
+        private void NavigateToOrderDetailsPage(int orderId)
+        {
+            if (Application.Current.MainWindow.FindName("MainFrame") is Frame frame)
+            {
+                var viewModel = new OrderDetailsViewModel(_orderService, orderId);
+                frame.Navigate(new OrderDetailsPage(viewModel));
             }
         }
 

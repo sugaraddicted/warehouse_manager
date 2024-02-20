@@ -36,10 +36,10 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="{Binding Product.Source}" Margin="5" Height="80" Width="80"/>
-                                    <Button Background="#141F21" Content="-" Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                    <Button Background="#141F21" BorderBrush="Transparent" Content="-" Command="{Binding DataContext.DecreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                                 CommandParameter="{Binding}" Margin="5"  Foreground="White" Height="30" Width="25" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0, 0, 0, 5" />
                                     <TextBlock Text="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5" Foreground="White" VerticalAlignment="Center"/>
-                                    <Button Background="#141F21" Content="+" Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                    <Button Background="#141F21" BorderBrush="Transparent" Content="+" Command="{Binding DataContext.IncreaseQuantityCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
                                 CommandParameter="{Binding}"  Margin="5" Foreground="White" Height="30" Width="25" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="0, 0, 0, 5"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -47,7 +47,6 @@
                     </GridViewColumn>
                     <GridViewColumn Header="Product Name" DisplayMemberBinding="{Binding Product.Name}" />
                     <GridViewColumn Header="Product Price" DisplayMemberBinding="{Binding Product.Price}" />
-                    <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding TotalPrice}" />
                 </GridView>
             </ListView.View>
         </ListView>

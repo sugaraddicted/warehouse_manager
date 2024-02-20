@@ -26,19 +26,17 @@ namespace Warehouse_Manager.Data.Services
 
             return orders;
         }
+
+        public Order GetOrderById(int orderId)
+        {
+            var order = _context.Orders.Where(o => o.Id == orderId).Include(n => n.OrderItems)
+                .ThenInclude(n => n.Product).Include(n => n.User).Include(n => n.ShippingAddress).FirstOrDefault();
+
+            return order;
+        }
         public async Task StoreOrderAsync(Order order)
         {
             await _context.Orders.AddAsync(order);
-            await _context.SaveChangesAsync();
-
-            foreach (var item in order.OrderItems)
-            {
-                item.Id = 0;
-                item.OrderId = order.Id;
-                await _context.OrderItems.AddAsync(item);
-            }
-
-            // Save changes to the database
             await _context.SaveChangesAsync();
         }
     }

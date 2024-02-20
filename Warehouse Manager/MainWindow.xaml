@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Warehouse_Manager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="850">
+        Title="Warehouse Manager" Height="500" Width="850"
+        ResizeMode="NoResize">
     
     <Frame x:Name ="MainFrame" NavigationUIVisibility="Hidden" MouseDown="Move"/>
 </Window>

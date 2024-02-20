@@ -12,7 +12,7 @@ namespace Warehouse_Manager.MVVM.Model
         public int ShippingAddressId { get; set; }
         public DateTime OrderDate { get; set; }
         public string CustomerNotes { get; set; }
-        public double Total { get; set; }
+        public decimal Total { get; set; }
 
         [ForeignKey("UserId")]
         public User User { get; set; }

@@ -48,6 +48,7 @@ namespace Warehouse_Manager
             services.AddSingleton<IOrderService, OrderService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IShippingAddressService, ShippingAddressService>();
+            services.AddScoped<IShoppingCartItemService, ShoppingCartItemService>();
             services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -63,6 +64,7 @@ namespace Warehouse_Manager
             services.AddTransient<OrderViewModel>();
             services.AddTransient<OrdersViewModel>();
             services.AddTransient<ProductDetailsViewModel>();
+            services.AddTransient<OrderDetailsViewModel>();
 
             services.AddScoped<RegisterPage>();
             services.AddTransient<HomePage>();
@@ -72,6 +74,7 @@ namespace Warehouse_Manager
             services.AddScoped<LoginPage>();
             services.AddTransient<DeleteProductConfirmationPage>();
             services.AddTransient<OrdersPage>();
+            services.AddTransient<OrderDetailsPage>();
 
             return services.BuildServiceProvider();
         }

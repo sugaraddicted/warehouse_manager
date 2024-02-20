@@ -15,7 +15,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1" Grid.Column="0">
@@ -24,11 +24,12 @@
                 Command="{Binding AddProductButtonCommand}"
                 Height="40"
                 Width="110"
+                FontSize="14"
                 Padding ="1"
                 Background="#D9D9D9"
                 BorderBrush="Transparent"
                 Content="Add Product"
-                Foreground="#2C4247"
+                Foreground="#141F21"
                 HorizontalContentAlignment="Center"
                 Margin="10">
                 <Button.Style>
@@ -48,11 +49,12 @@
                 VerticalAlignment="Center"
                 Height="40"
                 Width="110"
+                FontSize="14"
                 Padding ="1"
-                Background="#D9D9D9"
+                Background="#141F21"
+                Foreground="#D9D9D9"
                 BorderBrush="Transparent"
                 Content="Cart"
-                Foreground="#2C4247"
                 HorizontalContentAlignment="Center"
                 Margin="10"/>
             <Button
@@ -61,11 +63,12 @@
                 VerticalAlignment="Center"
                 Height="40"
                 Width="110"
+                FontSize="14"
                 Padding ="1"
-                Background="#D9D9D9"
+                Background="#141F21"
+                Foreground="#D9D9D9"
                 BorderBrush="Transparent"
                 Content="Orders"
-                Foreground="#2C4247"
                 HorizontalContentAlignment="Center"
                 Margin="10">
                 <Button.Style>
@@ -85,11 +88,12 @@
                 VerticalAlignment="Center"
                 Height="40"
                 Width="110"
+                FontSize="14"
                 Padding ="1"
-                Background="#D9D9D9"
+                Background="#141F21"
                 BorderBrush="Transparent"
                 Content="Logout"
-                Foreground="#2C4247"
+                Foreground="#D9D9D9"
                 HorizontalContentAlignment="Center"
                 Margin="10">
                 <Button.Style>
@@ -110,10 +114,10 @@
                 Height="40"
                 Width="110"
                 Padding ="1"
-                Background="#D9D9D9"
+                Background="#141F21"
                 BorderBrush="Transparent"
                 Content="Login or register"
-                Foreground="#2C4247"
+                Foreground="#D9D9D9"
                 HorizontalContentAlignment="Center"
                 Margin="10">
                 <Button.Style>
@@ -141,8 +145,8 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <!-- Define your tile layout here -->
-                                
-                                    <Border CornerRadius="10" Background="#5D8E99" Padding="5" Width="140">
+
+                                <Border CornerRadius="10" Background="#D9D9D9" Padding="5" Width="140">
                                     <StackPanel>
                                         <Button  x:Name="DetailsButton"
                                             Background="Transparent"
@@ -153,7 +157,7 @@
                                             CommandParameter="{Binding}">
                                             <Image Source="{Binding Image}" Width="120" Height="120" />
                                         </Button>
-                                        <TextBlock Foreground="#D9D9D9" Text="{Binding Name}" FontWeight="Bold" />
+                                        <TextBlock Foreground="#141F21" Text="{Binding Name}" FontWeight="Bold" />
                                         <TextBlock Text="{Binding Price, StringFormat='{}${0:F2}'}" />
                                     </StackPanel>
                                 </Border>

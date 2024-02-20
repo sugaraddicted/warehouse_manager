@@ -34,6 +34,14 @@
                     <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Id}" Width="150" />
                     <GridViewColumn Header="Date" DisplayMemberBinding="{Binding OrderDate}" Width="150"/>
                     <GridViewColumn Header="Total Price" DisplayMemberBinding="{Binding Total}" Width="150"/>
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button  Background="#141F21" BorderBrush="Transparent" Command="{Binding DataContext.DetailsButtonCommand, RelativeSource={RelativeSource AncestorType=ListView}}" 
+                                         CommandParameter="{Binding Id}" Content="Details"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

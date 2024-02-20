@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Windows.Input;
 
 namespace Warehouse_Manager.MVVM.Model
 {
